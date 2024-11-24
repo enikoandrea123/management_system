@@ -1,8 +1,8 @@
 import os
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'a_random_secret_key'
+    SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///library.db'
-    SESSION_PROTECTION = 'strong'
-    LOGIN_DISABLED = False

@@ -1,6 +1,7 @@
-from app import db  # Now db is imported from app/__init__.py
+from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,7 +10,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(10), nullable=False)  # "librarian" or "student"
 
-    # Define a relationship to BorrowHistory
     borrowed_books = db.relationship('BorrowHistory', back_populates='user')
 
     def set_password(self, password):
@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -25,8 +26,8 @@ class Book(db.Model):
     genre = db.Column(db.String(50), nullable=False)
     availability = db.Column(db.Boolean, default=True)
 
-    # Define a relationship to BorrowHistory
     borrowed_books = db.relationship('BorrowHistory', back_populates='book')
+
 
 class BorrowHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +36,5 @@ class BorrowHistory(db.Model):
     borrow_date = db.Column(db.DateTime, nullable=False)
     return_date = db.Column(db.DateTime, nullable=True)
 
-    # Define relationships to User and Book
     user = db.relationship('User', back_populates='borrowed_books')
     book = db.relationship('Book', back_populates='borrowed_books')

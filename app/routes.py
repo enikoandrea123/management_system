@@ -11,6 +11,7 @@ main_bp = Blueprint('main', __name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @main_bp.route('/')
 def index():
     return render_template('index.html')
@@ -56,8 +57,7 @@ def logout():
     logout_user()
     return redirect(url_for('main.index'))
 
+
 @login_manager.user_loader
 def load_user(user_id):
-    # Assuming you are using an ORM like SQLAlchemy
-    # You should replace this with your actual query logic to find the user by ID
-    return User.query.get(int(user_id))  # Replace with how you retrieve a user in your DB
+    return User.query.get(int(user_id))
