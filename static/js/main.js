@@ -12,3 +12,15 @@ document.getElementById('search-bar').addEventListener('input', function() {
             });
         });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const closeBtn = document.getElementById('closePopup');
+    const popup = document.getElementById('popup');
+    if (popup) {
+        popup.style.display = 'block';
+    }
+
+    closeBtn.addEventListener('click', function () {
+        popup.style.display = 'none';
+    });
+});

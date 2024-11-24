@@ -1,63 +1,79 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container">
+<div class="container">
     <h2>Create an Account</h2>
 
     <form method="POST" action="{{ url_for('main.register') }}">
-      {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }}  <!-- CSRF protection -->
 
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" class="form-control" value="{{ form.username.data }}" required>
-        {% if form.username.errors %}
-          <ul class="errors">
-            {% for error in form.username.errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
+        <div class="form-group">
+            <label id="username">Username</label>
+            {{ form.username(class="form-control", id="username") }}
+            <!-- Flask-WTF Form Field -->
+            {% if form.username.errors %}
+            <ul class="errors">
+                {% for error in form.username.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" class="form-control" value="{{ form.email.data }}" required>
-        {% if form.email.errors %}
-          <ul class="errors">
-            {% for error in form.email.errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
+        <div class="form-group">
+            <label id="email">Email</label>
+            {{ form.email(class="form-control", id="email") }}  <!-- Flask-WTF Form Field -->
+            {% if form.email.errors %}
+            <ul class="errors">
+                {% for error in form.email.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" class="form-control" required>
-        {% if form.password.errors %}
-          <ul class="errors">
-            {% for error in form.password.errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
+        <div class="form-group">
+            <label id="password">Password</label>
+            {{ form.password(class="form-control", id="password") }}  <!-- Flask-WTF Form Field -->
+            {% if form.password.errors %}
+            <ul class="errors">
+                {% for error in form.password.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
 
-      <div class="form-group">
-        <label for="confirm_password">Confirm Password</label>
-        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
-        {% if form.confirm_password.errors %}
-          <ul class="errors">
-            {% for error in form.confirm_password.errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
+        <div class="form-group">
+            <label id="confirm_password">Confirm Password</label>
+            {{ form.confirm_password(class="form-control", id="confirm_password") }}
+            {% if form.confirm_password.errors %}
+            <ul class="errors">
+                {% for error in form.confirm_password.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
 
-      <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">Register</button>
     </form>
 
     <p>Already have an account? <a href="{{ url_for('main.login') }}">Login here</a></p>
-  </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<!-- Modal Popup for error messages -->
+<div id="popup" class="popup">
+    <ul>
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    <button id="closePopup">Close</button>
+</div>
+{% endif %}
+{% endwith %}
+
 {% endblock %}
